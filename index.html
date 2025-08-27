@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDAU - Yaponiya Qurilish Markazi</title>
+    <style>
+        /* Asosiy uslublar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        /* Konteyner va joylashuv */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-wrap: wrap; /* Elementlarning yangi qatorga o'tishiga ruxsat beradi */
+            align-items: center;
+            justify-content: center; /* Kontentni markazlashtirish */
+            padding: 80px 4%; /* Yuqori va yon bo'shliqlarni ko'paytiramiz */
+            position: relative;
+            gap: 60px; /* Asosiy elementlar orasidagi bo'shliq */
+        }
+
+        /* O'zgartirilgan joylashuv */
+        .content, .form-container {
+            transform: none; /* Elementlarni pastga siljitishni bekor qilamiz */
+        }
+
+        /* Animatsiya zarrachalari */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            left: 85%;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 35%;
+            right: 15%;
+            animation-delay: 6s;
+        }
+
+        .particle:nth-child(4) {
+            width: 40px;
+            height: 40px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            25% { transform: translateY(-30px) rotate(90deg) scale(1.1); }
+            50% { transform: translateY(-15px) rotate(180deg) scale(0.9); }
+            75% { transform: translateY(-25px) rotate(270deg) scale(1.05); }
+        }
+
+        /* Chap tomon kontenti */
+        .content {
+            flex: 1.1;
+            max-width: 680px;
+            animation: slideInLeft 1s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            padding-bottom: 200px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 35px;
+            animation: rotate 4s linear infinite;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .university-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1em;
+            animation: slideInLeft 1.6s ease-out 0.8s both;
+            align-self: flex-start;
+        }
+
+        .university-badge::before {
+            content: "🏛️";
+            margin-right: 12px;
+            font-size: 1.2em;
+        }
+
+        h1 {
+            font-size: 4.2em;
+            color: white;
+            line-height: 1.2;
+            animation: slideInLeft 1.2s ease-out 0.3s both;
+            font-weight: 700;
+        }
+
+        .highlight {
+            background: linear-gradient(45deg, #ffd93d, #ff6b6b, #ffd93d);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .description {
+            font-size: 1.3em;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.7;
+            animation: slideInLeft 1.4s ease-out 0.6s both;
+            font-weight: 400;
+        }
+
+        /* O'ng tomon forma */
+        .form-container {
+            flex: 0 0 410px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 42px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+            animation: slideInRight 1s ease-out;
+            position: relative;
+        }
+
+        .form-container::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+            border-radius: 27px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .form-title {
+            color: #333;
+            font-size: 1.9em;
+            margin-bottom: 35px;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid #e8e8e8;
+            border-radius: 15px;
+            font-size: 1.1em;
+            transition: all 0.4s ease;
+            background: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 25px rgba(102, 126, 234, 0.25);
+            transform: translateY(-3px);
+            background: white;
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+            font-weight: 400;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .form-note {
+            text-align: center;
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* Ma'lumot kartalari endi mavjud emas, shuning uchun uslublari o'chirildi */
+        .info-cards {
+            display: none;
+        }
+
+        .info-card {
+            display: none;
+        }
+
+        /* Til tanlash tugmasi */
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 10px 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+            font-size: 0.9em;
+        }
+
+        .language-selector:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Animatsiyalar */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-80px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(80px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInBottom {
+            from { opacity: 0; transform: translateY(80px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .success {
+            animation: successPulse 0.6s ease-in-out;
+        }
+
+        /* Moslashuvchan dizayn (Responsive) */
+        @media (max-width: 1024px) {
+            .container {
+                gap: 50px;
+                padding: 60px 3%;
+            }
+            
+            h1 {
+                font-size: 3.5em;
+            }
+            
+            .form-container {
+                flex: 0 0 380px;
+            }
+
+            .content {
+                gap: 30px;
+                padding-bottom: 180px;
+                max-width: 620px;
+            }
+
+            .language-selector {
+                top: 15px;
+                right: 15px;
+                padding: 8px 16px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 80px 20px 20px 20px;
+                text-align: center;
+                gap: 40px;
+                min-height: auto;
+                padding-bottom: 120px;
+                justify-content: flex-start;
+            }
+
+            .content {
+                gap: 25px;
+                align-items: center;
+                padding-bottom: 0;
+                max-width: 100%;
+            }
+
+            .university-badge {
+                align-self: center;
+            }
+
+            h1 {
+                font-size: 2.8em;
+            }
+
+            .form-container {
+                flex: none;
+                width: 100%;
+                max-width: 420px;
+                padding: 35px;
+            }
+            
+            .language-selector {
+                top: 15px;
+                right: 15px;
+                padding: 8px 16px;
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding-top: 70px;
+            }
+
+            .language-selector {
+                padding: 6px 12px;
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <div class="language-selector" onclick="toggleLanguage()">
+        <span id="langFlag">🇺🇿</span>
+        <span id="langText">O'zbek</span>
+        <span>▼</span>
+    </div>
+
+    <div class="container">
+        <div class="content">
+            <div class="logo">
+                <div class="logo-icon">🏗️</div>
+                <div class="logo-text" data-uz="TDAU JAPAN CENTER" data-en="TDAU JAPAN CENTER">TDAU JAPAN CENTER</div>
+            </div>
+
+            <div class="university-badge">
+                <span data-uz="TDAU rasmiy ichki markazi" data-en="Official TDAU Internal Center">TDAU rasmiy ichki markazi</span>
+            </div>
+
+            <h1>
+                <span class="highlight" data-uz="Yapon tilini" data-en="Learn Japanese">Yapon tilini</span><br>
+                <span data-uz="o'rganib" data-en="language and">o'rganib</span><br>
+                <span class="highlight" data-uz="Yaponiyada" data-en="work in">Yaponiyada</span><br>
+                <span data-uz="ishlashni" data-en="Japan">ishlashni</span><br>
+                <span data-uz="xohlaysizmi?" data-en="construction?">xohlaysizmi?</span>
+            </h1>
+
+            <p class="description" data-uz="Toshkent Davlat Arxitektura Universiteti shartnomasi asosida universitet talabalari uchun maxsus ochilgan ichki markaz. Professional yapon tili kurslari va Yaponiya qurilish kompaniyalarida kafolatlangan ish imkoniyatlari!" data-en="A special internal center for university students based on the contract of Tashkent State University of Architecture. Professional Japanese language courses and guaranteed job opportunities in Japanese construction companies!">
+                Toshkent Davlat Arxitektura Universiteti shartnomasi asosida universitet talabalari 
+                uchun maxsus ochilgan ichki markaz. Professional yapon tili kurslari va 
+                Yaponiya qurilish kompaniyalarida kafolatlangan ish imkoniyatlari!
+            </p>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title" data-uz="Kursga yozilish uchun ma'lumotlaringizni qoldiring" data-en="Leave your information to enroll in the course">Kursga yozilish uchun ma'lumotlaringizni qoldiring</h2>
+            
+            <form id="registrationForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <input type="text" class="form-input" id="nameInput" placeholder="To'liq ismingiz" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="tel" class="form-input" id="phoneInput" placeholder="Telefon raqamingiz" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="number" class="form-input" id="ageInput" placeholder="Yoshingiz" min="17" max="30" required>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span data-uz="📞 Menga qo'ng'iroq qiling!" data-en="📞 Call me!">📞 Menga qo'ng'iroq qiling!</span>
+                </button>
+            </form>
+            
+            <p class="form-note" data-uz="Kurslar TDAU universitet hududida o'qituvchilar va native speaker'lar bilan o'tkaziladi" data-en="Courses are conducted on the TDAU university campus with teachers and native speakers">
+                Kurslar TDAU universitet hududida<br>
+                o'qituvchilar va native speaker'lar bilan o'tkaziladi
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'uz';
+        
+        function toggleLanguage() {
+            currentLang = currentLang === 'uz' ? 'en' : 'uz';
+            
+            const langFlag = document.getElementById('langFlag');
+            const langText = document.getElementById('langText');
+            
+            if (currentLang === 'en') {
+                langFlag.textContent = '🇺🇸';
+                langText.textContent = 'English';
+            } else {
+                langFlag.textContent = '🇺🇿';
+                langText.textContent = 'O\'zbek';
+            }
+            
+            const elements = document.querySelectorAll('[data-uz]');
+            elements.forEach(element => {
+                const text = element.getAttribute(`data-${currentLang}`);
+                if (text) {
+                    element.innerHTML = text;
+                }
+            });
+            
+            updateFormPlaceholders();
+        }
+        
+        function updateFormPlaceholders() {
+            const nameInput = document.getElementById('nameInput');
+            const phoneInput = document.getElementById('phoneInput');
+            const ageInput = document.getElementById('ageInput');
+            
+            if (currentLang === 'en') {
+                nameInput.placeholder = 'Your full name';
+                phoneInput.placeholder = 'Your phone number';
+                ageInput.placeholder = 'Your age';
+            } else {
+                nameInput.placeholder = 'To\'liq ismingiz';
+                phoneInput.placeholder = 'Telefon raqamingiz';
+                ageInput.placeholder = 'Yoshingiz';
+            }
+        }
+
+        function scrollToForm() {
+            document.querySelector('.form-container').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Formadagi elementlarni olamiz
+            const nameInput = document.getElementById('nameInput');
+            const phoneInput = document.getElementById('phoneInput');
+            const ageInput = document.getElementById('ageInput');
+            const submitBtn = event.target.querySelector('.submit-btn');
+            
+            // Ma'lumotlarni o'zgaruvchilarga saqlaymiz
+            const studentData = {
+                name: nameInput.value,
+                phone: phoneInput.value,
+                age: ageInput.value
+            };
+
+            const originalText = submitBtn.innerHTML;
+            const loadingText = currentLang === 'en' ? '⏳ Sending...' : '⏳ Yuborilmoqda...';
+            const successText = currentLang === 'en' ? '✅ Sent!' : '✅ Yuborildi!';
+            const errorText = currentLang === 'en' ? '❌ Error!' : '❌ Xatolik!';
+
+            submitBtn.innerHTML = loadingText;
+            submitBtn.disabled = true;
+            event.target.style.transform = 'scale(0.98)';
+
+            try {
+                // Biz yaratgan serverless funksiyaga so'rov yuboramiz
+                const response = await fetch('/.netlify/functions/sendMessage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(studentData),
+                });
+
+                if (!response.ok) {
+                    // Agar serverdan xatolik kelsa
+                    throw new Error('Serverda xatolik yuz berdi');
+                }
+
+                // Muvaffaqiyatli bo'lsa
+                event.target.classList.add('success');
+                submitBtn.innerHTML = successText;
+
+                setTimeout(() => {
+                    const alertText = currentLang === 'en' ?
+                        '🎉 Thank you! We will contact you soon.' :
+                        '🎉 Rahmat! Tez orada siz bilan bog\'lanamiz.';
+                    
+                    alert(alertText);
+                    
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    event.target.reset();
+                    event.target.style.transform = 'scale(1)';
+                    event.target.classList.remove('success');
+                }, 1500);
+
+            } catch (error) {
+                // Xatolik yuz berganda
+                console.error('Ma\'lumot yuborishda xatolik:', error);
+                submitBtn.innerHTML = errorText;
+
+                setTimeout(() => {
+                    const alertErrorText = currentLang === 'en' ?
+                        'An error occurred while sending. Please try again.' :
+                        'Yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.';
+                    
+                    alert(alertErrorText);
+
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    event.target.style.transform = 'scale(1)';
+                }, 2000);
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const particles = document.querySelectorAll('.particle');
+            const scrollY = window.scrollY;
+            
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 0.3;
+                const rotation = scrollY * (0.1 + index * 0.05);
+                particle.style.transform = `translateY(${scrollY * speed}px) rotate(${rotation}deg)`;
+            });
+        });
+
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.style.transition = 'all 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+
+            input.addEventListener('input', function() {
+                if (this.checkValidity()) {
+                    this.style.borderColor = '#4CAF50';
+                } else {
+                    this.style.borderColor = '#e8e8e8';
+                }
+            });
+        });
+
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            const swipeThreshold = 50;
+            if (touchEndY < touchStartY - swipeThreshold) {
+                scrollToForm();
+            }
+        }
+
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+            
+            // Info-cardlar yo'qligi sababli bu kod ishlamaydi, shuning uchun o'chirib tashlanadi
+            // const infoCards = document.querySelectorAll('.info-card');
+            // infoCards.forEach((card, index) => {
+            //     card.style.animationDelay = `${2 + index * 0.2}s`;
+            // });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            particles.forEach((particle, index) => {
+                const speed = (index + 1) * 20;
+                const x = (mouseX - 0.5) * speed;
+                const y = (mouseY - 0.5) * speed;
+                
+                particle.style.transform += ` translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
