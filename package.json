@@ -1,0 +1,23 @@
+{
+  "name": "tdau-website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xusniddin-ux/tdauproject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xusniddin-ux/tdauproject/issues"
+  },
+  "homepage": "https://github.com/xusniddin-ux/tdauproject#readme",
+  "description": "",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}

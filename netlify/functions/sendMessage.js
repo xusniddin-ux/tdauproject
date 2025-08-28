@@ -1,55 +1,103 @@
-// Bu Asynchronous (asinxron) funksiya, Netlify tomonidan ishga tushiriladi
+// Global `fetch` kutubxonasini import qilish (Netlify'ning yangi versiyalari uchun kerak)
+const fetch = require('node-fetch');
+
+// Asosiy funksiya
 exports.handler = async function (event, context) {
-  // Frontend'dan kelgan ma'lumotlarni o'qib olamiz
+  // Har qanday so'rovga darhol javob qaytarish uchun
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    };
+  }
+
+  // So'rov tanasini (body) JSON formatiga o'tkazamiz
   const body = JSON.parse(event.body);
-  const { name, phone, age, telegram } = body;
 
-  // Netlify sozlamalaridan maxfiy ma'lumotlarni olamiz
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
 
-  // Telegram'ga yuboriladigan xabar matnini formatlaymiz
-  const message = `
+  // --- 2-Holat: Telegramdan tugma bosish so'rovi (Callback Query) keldi ---
+  if (body.callback_query) {
+    const callbackQuery = body.callback_query;
+    const message = callbackQuery.message;
+    const data = callbackQuery.data; // Tugmadan kelgan ma'lumot, masalan: "status_contacted"
+
+    const originalText = message.text;
+    let newText = originalText;
+
+    // Statusni o'zgartirish logikasi
+    if (data === 'status_new') {
+      newText = originalText.replace(/Status: .*/g, 'Status: ✅ Yangi');
+    } else if (data === 'status_contacted') {
+      newText = originalText.replace(/Status: .*/g, "Status: 📞 Bog'lanildi");
+    } else if (data === 'status_rejected') {
+      newText = originalText.replace(/Status: .*/g, 'Status: ❌ Rad etildi');
+    }
+
+    // Telegram'ga xabarni tahrirlash uchun so'rov yuborish
+    await fetch(`https://api.telegram.org/bot${botToken}/editMessageText`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: message.chat.id,
+        message_id: message.message_id,
+        text: newText,
+        parse_mode: 'Markdown',
+        reply_markup: message.reply_markup, // Tugmalarni saqlab qolish
+      }),
+    });
+
+    // Telegram'ga "OK" javobini qaytarish (shart)
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Callback received' }),
+    };
+  }
+
+  // --- 1-Holat: Saytdan yangi ariza keldi (avvalgi kodimiz) ---
+  else {
+    const { name, phone, age, telegram } = body;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+
+    // Tugmalarni yasaymiz
+    const inlineKeyboard = {
+      inline_keyboard: [
+        [
+          { text: '✅ Yangi', callback_data: 'status_new' },
+          { text: "📞 Bog'lanildi", callback_data: 'status_contacted' },
+          { text: '❌ Rad etildi', callback_data: 'status_rejected' },
+        ],
+      ],
+    };
+
+    // Xabar matniga Status qatorini qo'shamiz
+    const messageText = `
 📢 Yangi Ariza!
 
 👤 Ism: *${name}*
 📞 Telefon: \`${phone}\`
 🎂 Yosh: *${age}*
-✈️ Telegram: \`${telegram}\`  // YANGI O'ZGARISH: Telegram ma'lumoti xabarga qo'shildi
-  `;
+✈️ Telegram: \`${telegram}\`
 
-  // Telegram Bot API uchun URL manzilini tayyorlaymiz
-  const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+Status: ✅ Yangi
+    `;
 
-  // Telegram'ga so'rovni yuborish
-  try {
-    const response = await fetch(url, {
+    // Telegram'ga tugmalar bilan xabar yuborish
+    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: message,
-        parse_mode: 'Markdown', // Xabarni chiroyli formatlash uchun
+        text: messageText,
+        parse_mode: 'Markdown',
+        reply_markup: inlineKeyboard, // Tugmalarni qo'shamiz
       }),
     });
 
-    if (!response.ok) {
-      throw new Error(`Server xatosi: ${response.statusText}`);
-    }
-
-    // Frontend'ga muvaffaqiyatli javob qaytaramiz
+    // Saytga muvaffaqiyatli javob qaytarish
     return {
       statusCode: 200,
       body: JSON.stringify({ message: 'Xabar muvaffaqiyatli yuborildi!' }),
-    };
-  } catch (error) {
-    // Xatolik yuz bersa, log'ga yozamiz va frontend'ga xatolik haqida xabar beramiz
-    console.error('Xatolik:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Xabar yuborishda xatolik yuz berdi.' }),
     };
   }
 };
