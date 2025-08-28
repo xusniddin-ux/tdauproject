@@ -2,7 +2,7 @@
 exports.handler = async function (event, context) {
   // Frontend'dan kelgan ma'lumotlarni o'qib olamiz
   const body = JSON.parse(event.body);
-  const { name, phone, age } = body;
+  const { name, phone, age, telegram } = body;
 
   // Netlify sozlamalaridan maxfiy ma'lumotlarni olamiz
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -10,11 +10,12 @@ exports.handler = async function (event, context) {
 
   // Telegram'ga yuboriladigan xabar matnini formatlaymiz
   const message = `
-📢 Yangi Talaba Arizasi!
+📢 Yangi Ariza!
 
 👤 Ism: *${name}*
 📞 Telefon: \`${phone}\`
 🎂 Yosh: *${age}*
+✈️ Telegram: \`${telegram}\`  // YANGI O'ZGARISH: Telegram ma'lumoti xabarga qo'shildi
   `;
 
   // Telegram Bot API uchun URL manzilini tayyorlaymiz

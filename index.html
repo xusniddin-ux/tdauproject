@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TDAU - Yaponiya Qurilish Markazi</title>
+    <title>TAQU - HANDS Akademiyasi</title>
     <style>
         /* Asosiy uslublar */
         * {
@@ -435,12 +435,12 @@
     <div class="container">
         <div class="content">
             <div class="logo">
-                <div class="logo-icon">🏗️</div>
-                <div class="logo-text" data-uz="TDAU JAPAN CENTER" data-en="TDAU JAPAN CENTER">TDAU JAPAN CENTER</div>
+                <div class="logo-icon">🎓</div>
+                <div class="logo-text" data-uz="TAQU HANDS Akademiyasi" data-en="TAQU HANDS Academy">TAQU HANDS Akademiyasi</div>
             </div>
 
             <div class="university-badge">
-                <span data-uz="TDAU rasmiy ichki markazi" data-en="Official TDAU Internal Center">TDAU rasmiy ichki markazi</span>
+                <span data-uz="TAQUning HANDS rasmiy markazi" data-en="TAQU's HANDS official center">TAQUning HANDS rasmiy markazi</span>
             </div>
 
             <h1>
@@ -451,8 +451,8 @@
                 <span data-uz="xohlaysizmi?" data-en="construction?">xohlaysizmi?</span>
             </h1>
 
-            <p class="description" data-uz="Toshkent Davlat Arxitektura Universiteti shartnomasi asosida universitet talabalari uchun maxsus ochilgan ichki markaz. Professional yapon tili kurslari va Yaponiya qurilish kompaniyalarida kafolatlangan ish imkoniyatlari!" data-en="A special internal center for university students based on the contract of Tashkent State University of Architecture. Professional Japanese language courses and guaranteed job opportunities in Japanese construction companies!">
-                Toshkent Davlat Arxitektura Universiteti shartnomasi asosida universitet talabalari 
+            <p class="description" data-uz="Toshkent Arxitektura Qurilish Universiteti shartnomasi asosida universitet talabalari uchun maxsus ochilgan ichki markaz. Professional yapon tili kurslari va Yaponiya qurilish kompaniyalarida kafolatlangan ish imkoniyatlari!" data-en="A special internal center for university students based on the contract of Tashkent Architecture and Construction University. Professional Japanese language courses and guaranteed job opportunities in Japanese construction companies!">
+                Toshkent Arxitektura Qurilish Universiteti shartnomasi asosida universitet talabalari 
                 uchun maxsus ochilgan ichki markaz. Professional yapon tili kurslari va 
                 Yaponiya qurilish kompaniyalarida kafolatlangan ish imkoniyatlari!
             </p>
@@ -473,28 +473,29 @@
                 <div class="form-group">
                     <input type="number" class="form-input" id="ageInput" placeholder="Yoshingiz" min="17" max="30" required>
                 </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-input" id="telegramInput" placeholder="Telegram havolangiz (@username)" required>
+                </div>
                 
                 <button type="submit" class="submit-btn" id="submitBtn">
-                    <span data-uz="📞 Menga qo'ng'iroq qiling!" data-en="📞 Call me!">📞 Menga qo'ng'iroq qiling!</span>
+                    <span data-uz="✅ Yuborish" data-en="✅ Submit">✅ Yuborish</span>
                 </button>
             </form>
             
-            <p class="form-note" data-uz="Kurslar TDAU universitet hududida o'qituvchilar va native speaker'lar bilan o'tkaziladi" data-en="Courses are conducted on the TDAU university campus with teachers and native speakers">
-                Kurslar TDAU universitet hududida<br>
+            <p class="form-note" data-uz="Kurslar TAQU universitet hududida o'qituvchilar va native speaker'lar bilan o'tkaziladi" data-en="Courses are conducted on the TAQU university campus with teachers and native speakers">
+                Kurslar TAQU universitet hududida<br>
                 o'qituvchilar va native speaker'lar bilan o'tkaziladi
             </p>
         </div>
     </div>
-
     <script>
         let currentLang = 'uz';
         
         function toggleLanguage() {
             currentLang = currentLang === 'uz' ? 'en' : 'uz';
-            
             const langFlag = document.getElementById('langFlag');
             const langText = document.getElementById('langText');
-            
             if (currentLang === 'en') {
                 langFlag.textContent = '🇺🇸';
                 langText.textContent = 'English';
@@ -502,7 +503,6 @@
                 langFlag.textContent = '🇺🇿';
                 langText.textContent = 'O\'zbek';
             }
-            
             const elements = document.querySelectorAll('[data-uz]');
             elements.forEach(element => {
                 const text = element.getAttribute(`data-${currentLang}`);
@@ -510,7 +510,6 @@
                     element.innerHTML = text;
                 }
             });
-            
             updateFormPlaceholders();
         }
         
@@ -518,15 +517,18 @@
             const nameInput = document.getElementById('nameInput');
             const phoneInput = document.getElementById('phoneInput');
             const ageInput = document.getElementById('ageInput');
+            const telegramInput = document.getElementById('telegramInput'); // Yangi maydonni olamiz
             
             if (currentLang === 'en') {
                 nameInput.placeholder = 'Your full name';
                 phoneInput.placeholder = 'Your phone number';
                 ageInput.placeholder = 'Your age';
+                telegramInput.placeholder = 'Your Telegram link (@username)'; // Inglizcha placeholder
             } else {
                 nameInput.placeholder = 'To\'liq ismingiz';
                 phoneInput.placeholder = 'Telefon raqamingiz';
                 ageInput.placeholder = 'Yoshingiz';
+                telegramInput.placeholder = 'Telegram havolangiz (@username)'; // O'zbekcha placeholder
             }
         }
 
@@ -540,17 +542,19 @@
         async function handleSubmit(event) {
             event.preventDefault();
             
-            // Formadagi elementlarni olamiz
+            // ### JAVASCRIPT O'ZGARISHI 2 ###
             const nameInput = document.getElementById('nameInput');
             const phoneInput = document.getElementById('phoneInput');
             const ageInput = document.getElementById('ageInput');
+            const telegramInput = document.getElementById('telegramInput'); // Yangi maydonni olamiz
             const submitBtn = event.target.querySelector('.submit-btn');
             
-            // Ma'lumotlarni o'zgaruvchilarga saqlaymiz
+            // Yangi maydon ma'lumotini obyektga qo'shamiz
             const studentData = {
                 name: nameInput.value,
                 phone: phoneInput.value,
-                age: ageInput.value
+                age: ageInput.value,
+                telegram: telegramInput.value // Telegram ma'lumoti
             };
 
             const originalText = submitBtn.innerHTML;
@@ -563,31 +567,22 @@
             event.target.style.transform = 'scale(0.98)';
 
             try {
-                // Biz yaratgan serverless funksiyaga so'rov yuboramiz
                 const response = await fetch('/.netlify/functions/sendMessage', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(studentData),
                 });
 
                 if (!response.ok) {
-                    // Agar serverdan xatolik kelsa
                     throw new Error('Serverda xatolik yuz berdi');
                 }
 
-                // Muvaffaqiyatli bo'lsa
                 event.target.classList.add('success');
                 submitBtn.innerHTML = successText;
 
                 setTimeout(() => {
-                    const alertText = currentLang === 'en' ?
-                        '🎉 Thank you! We will contact you soon.' :
-                        '🎉 Rahmat! Tez orada siz bilan bog\'lanamiz.';
-                    
+                    const alertText = currentLang === 'en' ? '🎉 Thank you! We will contact you soon.' : '🎉 Rahmat! Tez orada siz bilan bog\'lanamiz.';
                     alert(alertText);
-                    
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                     event.target.reset();
@@ -596,17 +591,11 @@
                 }, 1500);
 
             } catch (error) {
-                // Xatolik yuz berganda
                 console.error('Ma\'lumot yuborishda xatolik:', error);
                 submitBtn.innerHTML = errorText;
-
                 setTimeout(() => {
-                    const alertErrorText = currentLang === 'en' ?
-                        'An error occurred while sending. Please try again.' :
-                        'Yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.';
-                    
+                    const alertErrorText = currentLang === 'en' ? 'An error occurred while sending. Please try again.' : 'Yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.';
                     alert(alertErrorText);
-
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                     event.target.style.transform = 'scale(1)';
@@ -665,12 +654,7 @@
 
         window.addEventListener('load', () => {
             document.body.style.opacity = '1';
-            
-            // Info-cardlar yo'qligi sababli bu kod ishlamaydi, shuning uchun o'chirib tashlanadi
-            // const infoCards = document.querySelectorAll('.info-card');
-            // infoCards.forEach((card, index) => {
-            //     card.style.animationDelay = `${2 + index * 0.2}s`;
-            // });
+        
         });
 
         document.addEventListener('mousemove', (e) => {
